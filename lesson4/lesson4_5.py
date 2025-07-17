@@ -3,7 +3,7 @@ import asyncio
 
 async def main():
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
+        browser = await p.chromium.launch(headless=False,slow_mo=100000)
         page = await browser.new_page()
         await page.goto('https://example.com')
         await page.wait_for_selector('p') #等待元素載入
