@@ -36,9 +36,7 @@ class SimpleApp:
         left_frame = tk.Frame(root_left_frame)
         left_frame.pack(pady=10, padx=10,fill=tk.BOTH, expand=True)
 
-        # 建立rightFrame來包含選取股票的資訊
-        right_frame = tk.Frame(self.root)
-        right_frame.pack(side=tk.RIGHT, pady=10,padx=10,fill=tk.BOTH, expand=True)
+        
 
         # 增加left_frame內的內容
         self.scrollbar = tk.Scrollbar(left_frame)
@@ -49,6 +47,8 @@ class SimpleApp:
                                         yscrollcommand=self.scrollbar.set,
                                         width=15,
                                         height=20)
+        #抓取stock_listbox的選取事件
+        self.stock_listbox.bind('<<ListboxSelect>>', self.on_stock_select)
         
         # 手動插入股票資料
         for stock in self.stock_codes:
@@ -57,10 +57,34 @@ class SimpleApp:
         self.stock_listbox.pack(side=tk.LEFT)
         self.scrollbar.config(command=self.stock_listbox.yview)
 
+        
+        # cancel_button,改變寬度和高度
+        cancel_button = tk.Button(root_left_frame, text="取消", command=self.clear_selection)
+        cancel_button.pack(side=tk.BOTTOM, pady=(0,10), fill=tk.X, expand=True)
+
+        # 建立root_right_frame來包含選取股票的資訊
+        root_right_frame = tk.Frame(self.root)
+        root_right_frame.pack(side=tk.RIGHT, pady=10,padx=10,fill=tk.BOTH, expand=True)
+
         # 在右側顯示選取的股票資訊
-        self.selected_label = tk.Label(right_frame, text="選取的股票資訊", font=("Arial", 16, "bold"))
+        self.selected_label = tk.Label(root_right_frame, text="選取的股票資訊", font=("Arial"))
         self.selected_label.pack(pady=10)
 
+
+    
+
+
+    
+    def on_stock_select(self, event):
+        """當股票被選取時，更新右側顯示的資訊"""
+        self.selected_stocks = [self.stock_listbox.get(i) for i in self.stock_listbox.curselection()]
+        print(f"選取的股票: {self.selected_stocks}")
+        self.selected_label.config(text=f"選取的股票數量是:{len(self.selected_stocks)}筆")
+
+
+    def clear_selection(self):
+        """清除選取的股票資訊"""
+        self.stock_listbox.selection_clear(0, tk.END)
 
     
 
