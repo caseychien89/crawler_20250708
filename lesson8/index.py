@@ -79,6 +79,13 @@ class SimpleApp:
             state=tk.DISABLED,
             command=lambda: threading.Thread(target=self.start_crawling, daemon=True).start()
         )
+        self.selected_button.pack(pady=(10,0), padx=10, fill=tk.X)
+
+        # 顯示爬蟲結果，並且靠右對齊
+        self.result_label = tk.Label(root_right_frame, text="爬蟲結果:", font=("Arial", 12), anchor="w", justify="right")
+        self.result_label.pack(pady=10, padx=10, fill=tk.X)
+
+
         self.selected_button.pack(pady=10, padx=10, fill=tk.X, expand=True)
 
         # 新增1個Label,顯示`爬蟲結果`
